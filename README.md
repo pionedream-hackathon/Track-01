@@ -43,6 +43,12 @@ cd ios && pod install
 yarn ios
 cd ios && pod install
 ```
+### Nếu trong quá trình build ios lỗi
+
+```bash
+rm -rf ~/Library/Developer/Xcode/DerivedData
+rm -rf ios/Pods ios/Podfile.lock
+```
 
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
