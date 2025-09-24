@@ -22,37 +22,27 @@ import {SendTransaction} from './views/SendTransaction';
 import {ReadContract} from './views/ReadContract';
 import {WriteContract} from './views/WriteContract';
 import {SignTypedDataV4} from './views/SignTypedDataV4';
-import {mainnet, polygon} from './utils/ChainUtils';
+import {pionechain, zerochain} from './utils/ChainUtils';
 import {siweConfig} from './utils/SiweUtils';
 
 // 1. Get projectId at https://cloud.reown.com
 const projectId = ENV_PROJECT_ID;
+// 2. Define your chains - Sử dụng Zero Chain
+const chains = [zerochain, pionechain];
 
-// 2. Define your chains
-const chains = [mainnet, polygon];
-
-// 3. Create config
+// 3. Create config - Cấu hình cho PioneFarm DApp
 const metadata = {
-  name: 'AppKit Ethers',
-  description: 'AppKit with Ethers',
-  url: 'https://reown.com/appkit',
-  icons: ['https://avatars.githubusercontent.com/u/179229932'],
+  name: 'PioneFarm DApp',
+  description: 'Ứng dụng truy xuất nguồn gốc nông sản',
+  url: 'https://pionefarm.com',
+  icons: ['https://pionefarm.com/logo.png'],
   redirect: {
-    native: 'rn-w3m-ethers-sample://',
+    native: 'pionefarm://',
   },
 };
 
-const coinbaseProvider = new CoinbaseProvider({
-  redirect: 'rn-w3m-ethers-sample://',
-  rpcUrl: mainnet.rpcUrl,
-  storage: new MMKV(),
-});
-
-const auth = new AuthProvider({projectId, metadata});
-
 const config = defaultConfig({
   metadata,
-  extraConnectors: [coinbaseProvider, auth],
 });
 
 const clipboardClient = {
@@ -63,11 +53,12 @@ const clipboardClient = {
 
 const customWallets = [
   {
-    id: 'rn-wallet',
-    name: 'RN Wallet',
+    id: 'com.companyname.swaptobe',
+    name: 'PioneWallet',
+    homepage: 'com.companyname.swaptobe',
     image_url:
-      'https://github.com/reown-com/reown-docs/blob/main/static/assets/home/walletkitLogo.png?raw=true',
-    mobile_link: 'rn-web3wallet://',
+      'https://raw.githubusercontent.com/kietpio/assets/refs/heads/main/ecosystem/wallet.png',
+    mobile_link: 'tobewallet://',
   },
 ];
 
@@ -76,14 +67,15 @@ createAppKit({
   projectId,
   metadata,
   chains,
+  defaultChain: zerochain,
   config,
-  siweConfig,
   customWallets,
   clipboardClient,
-  enableAnalytics: true,
   features: {
-    swaps: true,
-    onramp: true,
+    swaps: false, // Tắt swap nếu không cần
+    onramp: false, // Tắt onramp nếu không cần
+    email: false,
+    socials: false,
   },
 });
 
