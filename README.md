@@ -429,6 +429,12 @@ src/
 │   └── SupplyChainSteps/     # Cập nhật trạng thái sản phẩm
 └── hooks/                    # Custom hooks cho blockchain
 ```
+#### **Luồng hoạt động**
+
+```
+dAPp(FontEnd) -> Phần mềm quản lý ví (PioneWallet,Metamask,...) -> Smart Contract
+```
+
 
 ### Kiến Trúc Giải Quyết Vấn Đề Nông Nghiệp
 
