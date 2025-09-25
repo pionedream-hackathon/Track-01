@@ -200,8 +200,17 @@ export const getCompanyInfo = async (
     const contract = createFarmContract(provider);
     const info = await contract.getCompanyInfo(String(businessID));
 
-    console.log('✅ Lấy thông tin công ty thành công:', info);
-    return info;
+    // Parse company info từ contract response
+    const company = {
+      owner: info[0],
+      registrationNumber: info[1],
+      name: info[2],
+      location: info[3] || '',
+      isActive: info[4] || false,
+    };
+
+    console.log('✅ Lấy thông tin công ty thành công:', company);
+    return company;
   } catch (error) {
     console.error('❌ Lỗi lấy thông tin công ty:', error);
     throw error;
