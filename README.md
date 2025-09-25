@@ -143,7 +143,7 @@ cd ios && pod install
 
 #### 1. **Ethers.js**
 
-- **Mục đích**: Thư viện chính để tương tác với Ethereum và các blockchain tương thích
+- **Mục đích**: Thư viện chính để tương tác với các blockchain tương thích
 - **Chức năng**:
   - Kết nối với RPC endpoints
   - Tạo và quản lý contract instances
@@ -186,8 +186,8 @@ cd ios && pod install
 - **Cấu hình WalletConnect chi tiết**: https://docs.reown.com/appkit/react-native/core/installation#ethers-3
 
 ```javascript
-// Testnet Configuration
-export const testnet = {
+// ZeroChain Configuration
+export const zerochain = {
   chainId: 5080,
   name: 'Pione Zero',
   currency: 'PZO',
