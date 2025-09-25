@@ -92,11 +92,13 @@ const API_ENDPOINTS = {
 /**
  * Tạo contract instance cho Farm Traceability
  */
-const createFarmContract = (signer: ContractRunner | null): Contract => {
+const createFarmContract = (
+  signerOrProvider: ContractRunner | null,
+): Contract => {
   return new Contract(
-    CONTRACT_ADDRESSES.FARM_TRACEABILITY,
-    FARM_TRACEABILITY_ABI,
-    signer,
+    CONTRACT_ADDRESSES.FARM_TRACEABILITY, // địa chỉ contract
+    FARM_TRACEABILITY_ABI, // ABI của contract
+    signerOrProvider, // signer để ký và gửi transaction , hoặc provider để đọc dữ liệu
   );
 };
 
@@ -105,12 +107,12 @@ const createFarmContract = (signer: ContractRunner | null): Contract => {
  */
 const createSupplyChainContract = (
   contractAddress: string,
-  signer: ContractRunner | null,
+  signerOrProvider: ContractRunner | null,
 ): Contract => {
   if (!contractAddress) {
     throw new Error(ERROR_MESSAGES.INVALID_CONTRACT);
   }
-  return new Contract(contractAddress, AGRI_SUPPLYCHAIN_ABI, signer);
+  return new Contract(contractAddress, AGRI_SUPPLYCHAIN_ABI, signerOrProvider);
 };
 
 /**
