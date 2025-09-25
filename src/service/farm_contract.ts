@@ -91,6 +91,7 @@ const API_ENDPOINTS = {
 
 /**
  * Tạo contract instance cho Farm Traceability
+ * Khởi tạo một đối tượng contract để tương tác với Farm Traceability contract. Đây chính là cầu nối giữa frontend và smart contract, cho phép dApp gọi hàm, đọc dữ liệu và gửi transaction tới contract trên blockchain.
  */
 const createFarmContract = (
   signerOrProvider: ContractRunner | null,
