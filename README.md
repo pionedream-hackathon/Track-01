@@ -227,50 +227,26 @@ export const testnet = {
 ```javascript
 import '@walletconnect/react-native-compat';
 
-import React, {useEffect} from 'react';
-import {Linking, SafeAreaView, StyleSheet} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import React from 'react';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {SafeAreaView} from 'react-native';
+import {PROJECT_ID} from '@env';
 import {
+  AppKit,
   createAppKit,
   defaultConfig,
-  AppKitButton,
-  AppKit,
 } from '@reown/appkit-ethers-react-native';
-import {FlexView, Text} from '@reown/appkit-ui-react-native';
-import {MMKV} from 'react-native-mmkv';
 
-// Import các component tương tác blockchain
-import {SignMessage} from './views/SignMessage';
-import {SendTransaction} from './views/SendTransaction';
-import {ReadContract} from './views/ReadContract';
-import {WriteContract} from './views/WriteContract';
-import {SignTypedDataV4} from './views/SignTypedDataV4';
+import AppNavigator from './navigation/AppNavigator';
+import {pionechain, zerochain} from './utils/ChainUtils';
 
-// Cấu hình chains (thay thế bằng Pione Chain)
-const pioneMainnet = {
-  chainId: 5090,
-  name: 'Pione Chain',
-  currency: 'PIO',
-  explorerUrl: 'https://scan.pionechain.com',
-  rpcUrl: 'https://rpc.pionechain.com',
-};
+// 1. Get projectId at https://cloud.reown.com
+const projectId = PROJECT_ID;
+// 2. Define your chains - Sử dụng Pione Chain
+const chains = [zerochain, pionechain];
 
-const pioneTestnet = {
-  chainId: 5080,
-  name: 'Pione Zero',
-  currency: 'PZO',
-  explorerUrl: 'https://zeroscan.org',
-  rpcUrl: 'https://rpc.zeroscan.org',
-};
-
-// 1. Lấy projectId từ https://cloud.reown.com
-const projectId = 'YOUR_PROJECT_ID';
-
-// 2. Định nghĩa chains
-const chains = [pioneMainnet, pioneTestnet];
-
-// 3. Tạo config
+// 3. Create config - Cấu hình cho PioneFarm DApp
 const metadata = {
   name: 'PioneFarm DApp',
   description: 'Ứng dụng truy xuất nguồn gốc nông sản',
@@ -285,78 +261,56 @@ const config = defaultConfig({
   metadata,
 });
 
-// Clipboard client cho copy/paste
 const clipboardClient = {
   setString: async (value: string) => {
     Clipboard.setString(value);
   },
 };
 
-// Custom wallets (tùy chọn)
 const customWallets = [
   {
-    id: 'pione-wallet',
+    id: 'com.companyname.swaptobe',
     name: 'PioneWallet',
-    image_url: 'https://pionewallet.com/logo.png',
+    homepage: 'com.companyname.swaptobe',
+    image_url:
+      'https://raw.githubusercontent.com/kietpio/assets/refs/heads/main/ecosystem/wallet.png',
     mobile_link: 'tobewallet://',
   },
 ];
 
-// 4. Tạo AppKit
+// 3. Create modal
 createAppKit({
   projectId,
   metadata,
   chains,
+  defaultChain: zerochain,
   config,
   customWallets,
   clipboardClient,
   features: {
     swaps: false, // Tắt swap nếu không cần
     onramp: false, // Tắt onramp nếu không cần
+    email: false,
+    socials: false,
   },
 });
+
+const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title} variant="large-600">
-        PioneFarm DApp
-      </Text>
-      <FlexView style={styles.buttonContainer}>
-        {/* Button kết nối ví chính */}
-        <AppKitButton balance="show" />
-
-        {/* Các component tương tác blockchain */}
-        <SignMessage />
-        <SendTransaction />
-        <SignTypedDataV4 />
-        <ReadContract />
-        <WriteContract />
-      </FlexView>
-
-      {/* Modal AppKit */}
-      <AppKit />
-    </SafeAreaView>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaView style={{flex: 1}}>
+        <AppNavigator />
+        {/* AppKit Modal */}
+        <AppKit />
+      </SafeAreaView>
+    </QueryClientProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    rowGap: 16,
-  },
-  buttonContainer: {
-    gap: 8,
-  },
-  title: {
-    marginBottom: 40,
-    fontSize: 30,
-  },
-});
-
 export default App;
+
 ```
 
 #### **Cách Lấy WalletConnect Project ID:**
