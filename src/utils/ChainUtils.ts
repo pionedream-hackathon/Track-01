@@ -4,7 +4,7 @@ export const pionechain = {
   name: 'Pione Chain',
   currency: 'PIO',
   explorerUrl: 'https://scan.pionechain.com',
-  rpcUrl: 'https://rpc.pionechain.com',
+  rpcUrl: 'https://rpc.pionescan.com',
 };
 
 // Zero Pione Chain
